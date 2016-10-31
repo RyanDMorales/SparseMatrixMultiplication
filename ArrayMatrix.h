@@ -15,6 +15,8 @@ private:
     int lastCol;
     bool sorted;
     Array *arrayList;
+    int count = 0;
+    int count2 = 0;
 
 public:
     static int counter;
@@ -68,6 +70,8 @@ public:
     void printMatrix();
 
     void nlogn();
+
+    int numOfentries();
 
     void printBigO(string algorithm, int entries, double bigO);
 

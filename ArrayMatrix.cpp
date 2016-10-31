@@ -36,7 +36,6 @@ ArrayMatrix::ArrayMatrix(string filename, string outfile) : ArrayMatrix() {
 }
 
 ArrayMatrix::~ArrayMatrix() {
-
     delete arrayList;
 }
 
@@ -146,6 +145,10 @@ void ArrayMatrix::addMatrixRecursive(ArrayMatrix *matrix, int current) {
     addMatrixRecursive(matrix, current + 1);
 }
 
+int ArrayMatrix::numOfentries() {
+    return this->arrayList->getNumElements();
+}
+
 //Sorts Matrix
 //void ArrayMatrix::sortMatrix() {
 //
@@ -202,7 +205,8 @@ void ArrayMatrix::printToFile(string filename) {
 void ArrayMatrix::printBigO(string algorithm, int entries, double bigO) {
     ofstream outStream;
     outStream.open("bigO.txt", ios::app);
-    outStream << "  " << algorithm << " " << setw(8) << entries << " " << setw(13) << counter << " " << setw(13) << bigO
+    outStream << "  " << algorithm << " " << setw(8) << entries << " " << setw(13) << this->counter << " " << setw(13)
+              << bigO
               << endl;
     outStream.close();
 }

@@ -14,6 +14,7 @@ bool greaterThan(MatrixElement a, MatrixElement b, int *counter) {
 bool lessThanEqual(MatrixElement a, MatrixElement b, int *counter) {
     if (counter != NULL) {
         *counter = *counter + 1;
+
     }
     return a.row <= b.row || (a.row == b.row && a.col <= b.col);
 }

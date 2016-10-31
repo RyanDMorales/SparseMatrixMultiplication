@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
     //string op = "add";
     string op = "multiply";
     //string rec = "Yes";
-    //string sort = "O(n^2)";
-    string sort = "O(nlogn)";
+    string sort = "O(n^2)";
+    //string sort = "O(nlogn)";
 
     ofstream ofs(output);
     if (op == "multiply") {
@@ -48,7 +48,19 @@ int main(int argc, char *argv[]) {
             cout << endl;
             matrixB->sortMatrix();
             cout << endl;
+
         } else if (sort == "O(nlogn)") {
+            ofstream outStream;
+            outStream.open("bigO.txt", ios::app);
+            outStream << "Algorithm" << "  " << setw(6) << "#Entries(n)" << "  " << setw(6) << "Comparisons" << "  "
+                      << setw(6) << "BigO()Compares" << endl;
+            outStream.close();
+
+            matrixA->nlogn();
+            cout << endl;
+            matrixB->nlogn();
+            cout << endl;
+        } else {
             ofstream outStream;
             outStream.open("bigO.txt", ios::app);
             outStream << "Algorithm" << "  " << setw(6) << "#Entries(n)" << "  " << setw(6) << "Comparisons" << "  "
