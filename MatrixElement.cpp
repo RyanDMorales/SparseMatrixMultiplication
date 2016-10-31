@@ -2,9 +2,20 @@
 // Created by Ryan Morales on 9/25/16.
 //
 #include "MatrixElement.h"
+#include "ArrayMatrix.h"
 
-bool greaterThan(MatrixElement a, MatrixElement b) {
+bool greaterThan(MatrixElement a, MatrixElement b, int *counter) {
+    if (counter != NULL) {
+        *counter = *counter + 1;
+    }
     return a.row > b.row || (a.row == b.row && a.col > b.col);
+}
+
+bool lessThanEqual(MatrixElement a, MatrixElement b, int *counter) {
+    if (counter != NULL) {
+        *counter = *counter + 1;
+    }
+    return a.row <= b.row || (a.row == b.row && a.col <= b.col);
 }
 
 int max(int a, int b) {

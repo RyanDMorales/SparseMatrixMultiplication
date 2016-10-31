@@ -18,7 +18,8 @@ Array::Array(int initialSize) {
 
 Array::~Array() {
     if (elements != nullptr) {
-        delete[] elements;
+        delete elements;
+        //delete[] elements;
     }
 }
 
@@ -40,6 +41,7 @@ void Array::increaseArraySize(int arraySize) {
     elements = newArray;
     //increase sizeOfArray to new size
     sizeOfArray = arraySize;
+
 }
 
 //Gets number of elements

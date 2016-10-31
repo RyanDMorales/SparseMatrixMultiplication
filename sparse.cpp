@@ -3,22 +3,24 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 
 #include "ArrayMatrix.h"
-//#include "LinkedListMatrix.h"
+#include "LinkedListMatrix.h"
 #include "ArgumentManager.h"
 
 int main(int argc, char *argv[]) {
 
-    //ArgumentManager am(argc, argv);
-    //string op = am.get("operation");
-    //string str = am.get("storage");
-    //string rec = am.get("recursive");
-    //string inputA = am.get("A");
-    //string inputB = am.get("B");
-    //string output = am.get("result");
+//    ArgumentManager am(argc, argv);
+//    string op = am.get("operation");
+//    string str = am.get("storage");
+//    string rec = am.get("recursive");
+//    string inputA = am.get("A");
+//    string inputB = am.get("B");
+//    string output = am.get("result");
 
     string inputA = "a1.txt";
     string inputB = "b1.txt";
@@ -28,29 +30,54 @@ int main(int argc, char *argv[]) {
     //string op = "add";
     string op = "multiply";
     //string rec = "Yes";
+    //string sort = "O(n^2)";
+    string sort = "O(nlogn)";
 
+    ofstream ofs(output);
     if (op == "multiply") {
-        ArrayMatrix *matrixA = new ArrayMatrix(inputA);
-        ArrayMatrix *matrixB = new ArrayMatrix(inputB);
+        ArrayMatrix *matrixA = new ArrayMatrix(inputA, output);
+        ArrayMatrix *matrixB = new ArrayMatrix(inputB, output);
+        if (sort == "O(n^2)") {
+            ofstream outStream;
+            outStream.open("bigO.txt", ios::app);
+            outStream << "Algorithm" << "  " << setw(6) << "#Entries(n)" << "  " << setw(6) << "Comparisons" << "  "
+                      << setw(6) << "BigO()Compares" << endl;
+            outStream.close();
+
+            matrixA->sortMatrix();
+            cout << endl;
+            matrixB->sortMatrix();
+            cout << endl;
+        } else if (sort == "O(nlogn)") {
+            ofstream outStream;
+            outStream.open("bigO.txt", ios::app);
+            outStream << "Algorithm" << "  " << setw(6) << "#Entries(n)" << "  " << setw(6) << "Comparisons" << "  "
+                      << setw(6) << "BigO()Compares" << endl;
+            outStream.close();
+
+            matrixA->nlogn();
+            cout << endl;
+            matrixB->nlogn();
+            cout << endl;
+        }
         ArrayMatrix *matrixC = (matrixA->matrixMultiplication(matrixB));
-        matrixA->printMatrix();
-        cout << endl;
-        matrixB->printMatrix();
 
         if (matrixC != nullptr) {
             matrixC->printMatrix();
             matrixC->printToFile(output);
         } else {
-            cout << "Not Matrix Multiplication Compatible" << endl;
+
+            ofs.close();
+            //cout << "Not Matrix Multiplication Compatible" << endl;
             return 0;
         }
-        if (matrixA->isMatrixSorted()) {
-            cout << "matrixA is sorted" << endl;
-        } else cout << "matrixA is not sorted" << endl;
-
-        if (matrixB->isMatrixSorted()) {
-            cout << "matrixB is sorted" << endl;
-        } else cout << "matrixB is not sorted" << endl;
+//        if (matrixA->isMatrixSorted()) {
+//            cout << "matrixA is sorted" << endl;
+//        } else cout << "matrixA is not sorted" << endl;
+//
+//        if (matrixB->isMatrixSorted()) {
+//            cout << "matrixB is sorted" << endl;
+//        } else cout << "matrixB is not sorted" << endl;
     }
 
 //    bool recursive = rec.length() > 0 && rec[0] == 'Y';

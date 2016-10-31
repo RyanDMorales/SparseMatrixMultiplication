@@ -21,7 +21,8 @@ int max(int a, int b);
 
 bool goodInput(string line);
 
-bool greaterThan(MatrixElement a, MatrixElement b);
+bool greaterThan(MatrixElement a, MatrixElement b, int *counter);
 
+bool lessThanEqual(MatrixElement leftArray, MatrixElement rightArray, int *counter);
 
 #endif //SPARSE_PHASE_2_MATRIXELEMENT_H

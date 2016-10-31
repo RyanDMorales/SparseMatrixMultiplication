@@ -169,7 +169,7 @@ void LinkedListMatrix::sortMatrix() {
     int i, j;
     for (i = 1; i < this->list->getNumElements(); i++) {
         MatrixElement currentElement = *this->list->getMatrixElement(i);
-        for (j = i - 1; j >= 0 && greaterThan(*this->list->getMatrixElement(j), currentElement); j--) {
+        for (j = i - 1; j >= 0 && greaterThan(*this->list->getMatrixElement(j), currentElement, NULL); j--) {
             this->list->setMatrixElement(j + 1, this->list->getMatrixElement(j));
         }
         this->list->setMatrixElement(j + 1, &currentElement);

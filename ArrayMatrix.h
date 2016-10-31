@@ -15,16 +15,19 @@ private:
     int lastCol;
     bool sorted;
     Array *arrayList;
+
 public:
+    static int counter;
+
     ArrayMatrix();
 
-    ArrayMatrix(string filename);
+    ArrayMatrix(string filename, string outfile);
 
     ArrayMatrix(ArrayMatrix *copy);
 
     ~ArrayMatrix();
 
-    void readFile(string filename);
+    void readFile(string filename, string outfile);
 
     bool isMatrixSorted();
 
@@ -37,6 +40,12 @@ public:
     bool multiplicationCompatible(ArrayMatrix *matrix);
 
     ArrayMatrix *matrixMultiplication(ArrayMatrix *matrix);
+
+    //void addPoints(Array *newPoints);
+
+    //Array *scalarMultiplyRow(int row, int value);
+
+    //Array *scalarMultiplyCol(int col, int value);
 
     double binarySearch(int row, int col);
 
@@ -52,7 +61,15 @@ public:
 
     void sortMatrix();
 
+    void merge(int l, int m, int r);
+
+    void mergeSort(int l, int r);
+
     void printMatrix();
+
+    void nlogn();
+
+    void printBigO(string algorithm, int entries, double bigO);
 
     void printToFile(string filename);
 };

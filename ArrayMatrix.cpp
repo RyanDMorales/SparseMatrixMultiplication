@@ -5,10 +5,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
 #include "ArrayMatrix.h"
+#include "arraysort.h"
+#include "arraysearch.h"
 
 //help functions
 int max(int a, int b);
@@ -16,6 +19,8 @@ int max(int a, int b);
 bool goodInput(string line);
 
 bool greaterThan(MatrixElement a, MatrixElement b);
+
+int ArrayMatrix::counter = 0;
 
 ArrayMatrix::ArrayMatrix() {
     rows = 0;
@@ -26,16 +31,18 @@ ArrayMatrix::ArrayMatrix() {
     arrayList = new Array;
 }
 
-ArrayMatrix::ArrayMatrix(string filename) : ArrayMatrix() {
-    this->readFile(filename);
+ArrayMatrix::ArrayMatrix(string filename, string outfile) : ArrayMatrix() {
+    this->readFile(filename, outfile);
 }
 
 ArrayMatrix::~ArrayMatrix() {
+
     delete arrayList;
 }
 
-void ArrayMatrix::readFile(string filename) {
+void ArrayMatrix::readFile(string filename, string outfile) {
     fstream ifs(filename.c_str());
+
     if (ifs.fail()) {                                                                    //Checks to see if there is an input file
         cout << "Error File: " << filename << " " << "could not be opened!"
              << endl;          //Prints error is file does not open or exists
@@ -43,9 +50,12 @@ void ArrayMatrix::readFile(string filename) {
     } else {
         if (ifs.peek() == ifstream::traits_type::eof()) {    //Checks to see if the file is empty
             //cout << "Error: File is empty!!!" << endl;
+            ofstream ofs(outfile.c_str());
+            ofs.close();
             return;
         }
     }
+
     //Matrix that holds zero values
     ArrayMatrix *zeroMatrix = new ArrayMatrix();
 
@@ -137,20 +147,20 @@ void ArrayMatrix::addMatrixRecursive(ArrayMatrix *matrix, int current) {
 }
 
 //Sorts Matrix
-void ArrayMatrix::sortMatrix() {
-
-    // simple insertion sort in ascending order
-    int i, j;
-    for (i = 1; i < this->arrayList->getNumElements(); i++) {
-        MatrixElement currentElement = *this->arrayList->getMatrixElement(i);
-        for (j = i - 1; j >= 0 && greaterThan(*this->arrayList->getMatrixElement(j), currentElement); j--) {
-            this->arrayList->setMatrixElement(j + 1, this->arrayList->getMatrixElement(j));
-        }
-        this->arrayList->setMatrixElement(j + 1, &currentElement);
-    }
-
-
-}
+//void ArrayMatrix::sortMatrix() {
+//
+//    // simple insertion sort in ascending order
+//    int i, j;
+//    for (i = 1; i < this->arrayList->getNumElements(); i++) {
+//        MatrixElement currentElement = *this->arrayList->getMatrixElement(i);
+//        for (j = i - 1; j >= 0 && greaterThan(*this->arrayList->getMatrixElement(j), currentElement); j--) {
+//            this->arrayList->setMatrixElement(j + 1, this->arrayList->getMatrixElement(j));
+//        }
+//        this->arrayList->setMatrixElement(j + 1, &currentElement);
+//    }
+//
+//
+//}
 
 void ArrayMatrix::cleanZeroes() {
     int i, j;
@@ -170,7 +180,7 @@ void ArrayMatrix::cleanZeroes() {
 void ArrayMatrix::printMatrix() {
     cout.setf(ios::fixed | ios::showpoint);
     cout.precision(2);
-    cout << "#Matrix C=A*B" << endl;
+    //cout << "#Matrix C=A*B" << endl;
     for (int i = 0; i < this->arrayList->getNumElements(); i++) {
         MatrixElement *current = this->arrayList->getMatrixElement(i);
         cout << current->row << " " << current->col << " " << current->value << endl;
@@ -189,36 +199,44 @@ void ArrayMatrix::printToFile(string filename) {
     }
 }
 
-
-double ArrayMatrix::binarySearch(int row, int col) {
-    int max = this->arrayList->getNumElements() - 1;
-    int min = 0;
-    while (min <= max) {
-        int mid = (max + min / 2);
-        MatrixElement *current = this->arrayList->getMatrixElement(mid);
-        if (current->row == row && current->col == col) {
-            return current->value;
-        } else if (row > current->row && col > current->col) {
-            min = mid + 1;
-        } else {
-            max = mid - 1;
-        }
-    }
-    return 0;
+void ArrayMatrix::printBigO(string algorithm, int entries, double bigO) {
+    ofstream outStream;
+    outStream.open("bigO.txt", ios::app);
+    outStream << "  " << algorithm << " " << setw(8) << entries << " " << setw(13) << counter << " " << setw(13) << bigO
+              << endl;
+    outStream.close();
 }
 
-double ArrayMatrix::getValueAtCoordinate(int row, int col) {
-    if (this->sorted) {
-        return this->binarySearch(row, col);
-    }
-    for (int i = 0; i < this->arrayList->getNumElements(); i++) {
-        MatrixElement *current = this->arrayList->getMatrixElement(i);
-        if (current->row == row && current->col == col) {
-            return current->value;
-        }
-    }
-    return 0;
-}
+
+//double ArrayMatrix::binarySearch(int row, int col) {
+//    int max = this->arrayList->getNumElements() - 1;
+//    int min = 0;
+//    while (min <= max) {
+//        int mid = (max + min / 2);
+//        MatrixElement *current = this->arrayList->getMatrixElement(mid);
+//        if (current->row == row && current->col == col) {
+//            return current->value;
+//        } else if (row > current->row && col > current->col) {
+//            min = mid + 1;
+//        } else {
+//            max = mid - 1;
+//        }
+//    }
+//    return 0;
+//}
+//
+//double ArrayMatrix::getValueAtCoordinate(int row, int col) {
+//    if (this->sorted) {
+//        return this->binarySearch(row, col);
+//    }
+//    for (int i = 0; i < this->arrayList->getNumElements(); i++) {
+//        MatrixElement *current = this->arrayList->getMatrixElement(i);
+//        if (current->row == row && current->col == col) {
+//            return current->value;
+//        }
+//    }
+//    return 0;
+//}
 
 //Checks to see if Matrix is compatible for matrix multiplication
 bool ArrayMatrix::multiplicationCompatible(ArrayMatrix *matrix) {
@@ -230,27 +248,80 @@ ArrayMatrix *ArrayMatrix::matrixMultiplication(ArrayMatrix *matrix) {
         return nullptr;
     }
     ArrayMatrix *matrixC = new ArrayMatrix();
-    ArrayMatrix zeroMatrix = new ArrayMatrix();
+    //ArrayMatrix zeroMatrix = new ArrayMatrix();
 
     for (int i = 1; i <= this->rows; i++) {
         for (int j = 1; j <= matrix->cols; j++) {
             double sum = 0;
             for (int k = 1; k <= this->cols; k++) {
-                sum += this->getValueAtCoordinate(i, k) * matrix->getValueAtCoordinate(k, j);
+                sum += this->binarySearch(i, k) * matrix->binarySearch(k, j);
             }
             if (sum != 0) {
                 matrixC->setValueAtCoordinate(i, j, sum);
-            } else {
-                zeroMatrix.setValueAtCoordinate(i, j, sum);
             }
         }
     }
-    if ((zeroMatrix.rows >= matrixC->rows && zeroMatrix.cols >= matrixC->cols)) {
-        matrixC->setValueAtCoordinate(zeroMatrix.rows, zeroMatrix.cols, 0);
+    if ((this->rows == matrix->cols && (matrixC->getValueAtCoordinate(matrixC->rows, matrixC->cols) == 0))) {
+        matrixC->setValueAtCoordinate(this->rows, matrix->cols, 0);
+    } else if ((this->rows >= matrix->rows && matrixC->cols > matrix->cols)) {
+        matrixC->setValueAtCoordinate(this->rows, matrix->cols, 0);
+    } else if ((this->rows > matrix->rows && matrix->cols >= this->cols)) {
+        matrixC->setValueAtCoordinate(this->rows, matrix->cols, 0);
     }
-
     return matrixC;
 }
+
+
+//ArrayMatrix *ArrayMatrix::matrixMultiplication(ArrayMatrix *matrix) {
+//    if (!this->multiplicationCompatible(matrix)) {
+//        return nullptr;
+//    }
+//    ArrayMatrix *matrixC = new ArrayMatrix();
+//    ArrayMatrix zeroMatrix = new ArrayMatrix();
+//    for (int i = 0; i < this->arrayList->getNumElements(); i++) {
+//        MatrixElement* currentElement = this->arrayList->getMatrixElement(i);
+//        matrixC->addPoints(matrix->scalarMultiplyCol(currentElement->col, currentElement->value));
+//    }
+//    return matrixC;
+//}
+//void ArrayMatrix::addPoints(Array *newPoints) {
+//    for (int i = 0; i < newPoints->getNumElements(); i++) {
+//        MatrixElement* currentElement = newPoints->getMatrixElement(i);
+//        this->setValueAtCoordinate(
+//                currentElement->row,
+//                currentElement->col,
+//                currentElement->value + this->getValueAtCoordinate(currentElement->row, currentElement->col)
+//        );
+//    }
+//}
+//Array *ArrayMatrix::scalarMultiplyCol(int column, int value) {
+//    Array *result = new Array();
+//    for(int i = 0; i < this->arrayList->getNumElements(); i++) {
+//        MatrixElement* currentElement = this->arrayList->getMatrixElement(i);
+//        if(currentElement->col == column) {
+//            MatrixElement *newElement = new MatrixElement;
+//            newElement->row = currentElement->row;
+//            newElement->col = currentElement->col;
+//            newElement->value = currentElement->value * value;
+//            result->addMatrixElement(newElement);
+//        }
+//    }
+//    return result;
+//}
+//Array *ArrayMatrix::scalarMultiplyRow(int row, int value) {
+//    Array *result = new Array();
+//    for(int i = 0; i < this->arrayList->getNumElements(); i++) {
+//        MatrixElement* currentElement = this->arrayList->getMatrixElement(i);
+//        if(currentElement->row == row) {
+//            MatrixElement *newElement = new MatrixElement;
+//            newElement->row = currentElement->row;
+//            newElement->col = currentElement->col;
+//            newElement->value = currentElement->value * value;
+//            result->addMatrixElement(newElement);
+//        }
+//    }
+//    return result;
+//}
 
 
 void ArrayMatrix::setValueAtCoordinate(int row, int col, double value) {
