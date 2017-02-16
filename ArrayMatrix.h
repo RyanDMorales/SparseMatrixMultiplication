@@ -5,6 +5,8 @@
 #ifndef SPARSE_PHASE_2_ARRAYMATRIX_H
 #define SPARSE_PHASE_2_ARRAYMATRIX_H
 
+#define COLUMN_WIDTH 20
+
 #include "array.h"
 
 class ArrayMatrix {

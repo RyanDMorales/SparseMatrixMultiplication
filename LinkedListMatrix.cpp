@@ -71,14 +71,14 @@ LinkedListMatrix::LinkedListMatrix(string filename) : LinkedListMatrix() {
     }
 
     //Delete zeroMatrix
-    delete[] zeroMatrix;
+    delete zeroMatrix;
 
     //sort the Matrix
     this->sortMatrix();
 }
 
 LinkedListMatrix::~LinkedListMatrix() {
-    delete[] list;
+
 }
 
 LinkedListMatrix::LinkedListMatrix(LinkedListMatrix *copy) : LinkedListMatrix() {

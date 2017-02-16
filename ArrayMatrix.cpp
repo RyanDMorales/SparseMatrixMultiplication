@@ -205,7 +205,7 @@ void ArrayMatrix::printToFile(string filename) {
 void ArrayMatrix::printBigO(string algorithm, int entries, double bigO) {
     ofstream outStream;
     outStream.open("bigO.txt", ios::app);
-    outStream << "  " << algorithm << " " << setw(8) << entries << " " << setw(13) << this->counter << " " << setw(13)
+    outStream << algorithm << setw(COLUMN_WIDTH) << entries << setw(COLUMN_WIDTH) << this->counter << setw(COLUMN_WIDTH)
               << bigO
               << endl;
     outStream.close();
