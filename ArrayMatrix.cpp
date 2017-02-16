@@ -272,6 +272,7 @@ ArrayMatrix *ArrayMatrix::matrixMultiplication(ArrayMatrix *matrix) {
     } else if ((this->rows > matrix->rows && matrix->cols >= this->cols)) {
         matrixC->setValueAtCoordinate(this->rows, matrix->cols, 0);
     }
+
     return matrixC;
 }
 

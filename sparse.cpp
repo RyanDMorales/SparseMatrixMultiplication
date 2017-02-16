@@ -61,9 +61,10 @@ int main(int argc, char *argv[]) {
             outStream.close();
 
             matrixA->nlogn();
+            //matrixA->printMatrix();
 
             matrixB->nlogn();
-            matrixB->printMatrix();
+            //matrixB->printMatrix();
 
 
 
@@ -74,13 +75,11 @@ int main(int argc, char *argv[]) {
                       << "countComparisons" << " "
                       << setw(COLUMN_WIDTH) << "bigOcountComparisons" << endl;
             outStream.close();
-
             matrixA->nlogn();
-
             matrixB->nlogn();
 
         }
-        //matrixB->printMatrix();
+
         ArrayMatrix *matrixC = (matrixA->matrixMultiplication(matrixB));
         if (matrixC != nullptr) {
             matrixC->printMatrix();
@@ -91,13 +90,13 @@ int main(int argc, char *argv[]) {
             //cout << "Not Matrix Multiplication Compatible" << endl;
             return 0;
         }
-        if (matrixA->isMatrixSorted()) {
-            cout << "matrixA is sorted" << endl;
-        } else cout << "matrixA is not sorted" << endl;
-
-        if (matrixB->isMatrixSorted()) {
-            cout << "matrixB is sorted" << endl;
-        } else cout << "matrixB is not sorted" << endl;
+//        if (matrixA->isMatrixSorted()) {
+//            cout << "matrixA is sorted" << endl;
+//        } else cout << "matrixA is not sorted" << endl;
+//
+//        if (matrixB->isMatrixSorted()) {
+//            cout << "matrixB is sorted" << endl;
+//        } else cout << "matrixB is not sorted" << endl;
     }
 
 //    bool recursive = rec.length() > 0 && rec[0] == 'Y';
